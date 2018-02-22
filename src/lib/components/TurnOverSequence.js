@@ -1,15 +1,28 @@
 import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
+import VisibilitySensor from 'react-visibility-sensor';
 import TurnOverNumber from './TurnOverNumber';
 
 class TurnOverSequence extends Component {
   constructor(props) {
     super(props);
 
-    const { children, speed } = this.props;
-    const speeds = new Array(children.length).fill(0);
-    speeds[0] = speed;
-    this.state = { speeds };
+    const { children } = this.props;
+    this.state = {
+      speeds: new Array(children.length).fill(0),
+      animated: false,
+    };
+  }
+
+  onVisible = isVisible => {
+    if (isVisible && !this.state.animated) {
+      const newSpeeds = this.state.speeds.slice(0);
+      newSpeeds[0] = this.props.speed;
+      this.setState({
+        speeds: newSpeeds,
+        animated: true,
+      });
+    }
   }
 
   render() {
@@ -47,7 +60,14 @@ class TurnOverSequence extends Component {
       );
     });
 
-    return numbers;
+    return (
+      <VisibilitySensor
+        onChange={this.onVisible}
+        partialVisibility={true}
+      >
+        { () => numbers }
+      </VisibilitySensor>
+    );
   }
 }
 
