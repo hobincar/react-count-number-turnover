@@ -3,6 +3,20 @@ import PropTypes from 'prop-types';
 import TextLoop from './TextLoop';
 
 const TurnOverNumber = ({ children, start, speed, onEnd, style }) => {
+  if (start === children) {
+    return (
+      <TextLoop
+        speed={speed}
+        springConfig={{ stiffness: 180, damping: 8 }}
+        nCall={1}
+        onEnd={onEnd}
+        style={style}
+      >
+        { children }
+      </TextLoop>
+    );
+  }
+
   if (![0, 1, 2, 3, 4, 5, 6, 7, 8, 9].includes(start)) {
     throw "'start' prop should be a digit(0~9)";
   }
@@ -13,17 +27,26 @@ const TurnOverNumber = ({ children, start, speed, onEnd, style }) => {
   }
 
   const numbers = [];
-  for (let i = start; i <= end; i += 1) {
+  if (start > end) {
     numbers.push(
-      <span key={i}>{ i }</span>
+      <span key={start}>{ start }</span>
     );
+    numbers.push(
+      <span key={end}>{ end }</span>
+    );
+  } else {
+    for (let i = start; i <= end; i += 1) {
+      numbers.push(
+        <span key={i}>{ i }</span>
+      );
+    }
   }
 
   return (
     <TextLoop
       speed={speed}
       springConfig={{ stiffness: 180, damping: 8 }}
-      nCall={end - start + 1}
+      nCall={start > end ? 2 : end - start + 1}
       onEnd={onEnd}
       style={style}
     >
@@ -33,7 +56,10 @@ const TurnOverNumber = ({ children, start, speed, onEnd, style }) => {
 };
 
 TurnOverNumber.propTypes = {
-  start: PropTypes.number.isRequired,
+  start: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
   children: PropTypes.oneOfType([
     PropTypes.string.isRequired,
     PropTypes.number.isRequired,

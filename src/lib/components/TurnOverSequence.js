@@ -17,14 +17,18 @@ class TurnOverSequence extends Component {
     const { speeds } = this.state;
 
     const numbers = [];
-    children.split('').forEach((number, i) => {
-      number = Number.parseInt(number, 10);
-      const prevNumber = number === 0 ? 9 : number - 1;
+    children.split('').forEach((char, i) => {
+      const number = Number.parseInt(char, 10);
+      const start =
+        Number.isNaN(number) ? char
+        : number === 0 ? 9
+        : number - 1;
+      const end = Number.isNaN(number) ? char : number;
 
       numbers.push(
         <TurnOverNumber
           key={i}
-          start={prevNumber}
+          start={start}
           speed={speeds[i]}
           onEnd={() => this.setState((prevState, props) => {
             const nextSpeeds = prevState.speeds;
@@ -38,7 +42,7 @@ class TurnOverSequence extends Component {
           })}
           style={style}
         >
-          { number }
+          { end }
         </TurnOverNumber>
       );
     });

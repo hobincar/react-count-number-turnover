@@ -3,7 +3,7 @@ import { TurnOverSequence } from '../lib';
 
 const App = () => (
   <TurnOverSequence>
-    937
+    123,123,123,123,123,123
   </TurnOverSequence>
 );
 
