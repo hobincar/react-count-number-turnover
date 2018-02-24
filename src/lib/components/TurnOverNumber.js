@@ -32,7 +32,7 @@ class TurnOverNumber extends Component {
       return (
         <TextLoop
           speed={speed}
-          nCall={1}
+          nCall={0}
           onEnd={onEnd}
           style={style}
         >
@@ -80,7 +80,7 @@ class TurnOverNumber extends Component {
                 <TextLoop
                   speed={speed}
                   springConfig={springConfig}
-                  nCall={start > end ? 2 : end - start + 1}
+                  nCall={start > end ? 1 : end - start}
                   onEnd={onEnd}
                   style={style}
                 >
@@ -93,7 +93,7 @@ class TurnOverNumber extends Component {
           <TextLoop
             speed={speed}
             springConfig={springConfig}
-            nCall={start > end ? 2 : end - start + 1}
+            nCall={start > end ? 1 : end - start}
             onEnd={onEnd}
             style={style}
           >

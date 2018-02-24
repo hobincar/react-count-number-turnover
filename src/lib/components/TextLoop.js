@@ -78,7 +78,6 @@ class TextLoop extends React.PureComponent {
       if (!state.hasLoaded) {
         return {
           hasLoaded: true,
-          nCalled: state.nCalled + 1,
         };
       }
 

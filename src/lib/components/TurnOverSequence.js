@@ -7,9 +7,12 @@ class TurnOverSequence extends Component {
   constructor(props) {
     super(props);
 
-    const { children } = this.props;
+    const { children, visibilitySensorOn, speed } = this.props;
+    const speeds = new Array(children.length).fill(0);
+    if (!visibilitySensorOn)
+      speeds[0] = speed;
     this.state = {
-      speeds: new Array(children.length).fill(0),
+      speeds,
       animated: false,
     };
   }
