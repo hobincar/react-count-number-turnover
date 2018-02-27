@@ -73,8 +73,6 @@ class TurnOverSequence extends Component {
           <VisibilitySensor
             onChange={this.onVisible}
             partialVisibility={true}
-            scrollCheck={true}
-            resizeCheck={true}
           >
             { () => numbers }
           </VisibilitySensor>
