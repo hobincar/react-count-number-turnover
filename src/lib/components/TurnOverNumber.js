@@ -25,7 +25,7 @@ class TurnOverNumber extends Component {
   }
 
   render() {
-    const { children, visibilitySensorOn, start, springConfig, onEnd, style } = this.props;
+    const { children, visibilitySensorOn, start, springConfig, style } = this.props;
     const speed = visibilitySensorOn ? this.state.speed : this.props.speed;
 
     if (start === children) {
@@ -33,7 +33,6 @@ class TurnOverNumber extends Component {
         <TextLoop
           speed={speed}
           nCall={0}
-          onEnd={onEnd}
           style={style}
         >
           { children }
@@ -79,7 +78,6 @@ class TurnOverNumber extends Component {
                   speed={speed}
                   springConfig={springConfig}
                   nCall={start > end ? 1 : end - start}
-                  onEnd={onEnd}
                   style={style}
                 >
                   { numbers }
@@ -92,7 +90,6 @@ class TurnOverNumber extends Component {
             speed={speed}
             springConfig={springConfig}
             nCall={start > end ? 1 : end - start}
-            onEnd={onEnd}
             style={style}
           >
             { numbers }
@@ -117,7 +114,6 @@ TurnOverNumber.propTypes = {
     stiffness: PropTypes.number.isRequired,
     damping: PropTypes.number.isRequired
   }).isRequired,
-  onEnd: PropTypes.func,
   style: PropTypes.object,
 };
 
