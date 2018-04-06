@@ -19,28 +19,27 @@ class TurnOverSequence extends Component {
 
   onVisible = isVisible => {
     if (isVisible && !this.state.animated) {
-      const newSpeeds = this.state.speeds.slice(0);
-      newSpeeds[0] = this.props.speed;
-      this.setState({
-        speeds: newSpeeds,
-        animated: true,
-      });
-    }
-  }
+      const { delay, speed, children } = this.props;
+      const { speeds } = this.state;
 
-  onEndOfNumberAt = (i, speed, maxLength) => () => {
-    const nextSpeeds = this.state.speeds.slice(0);
-    nextSpeeds[i] = 0;
-    if (i !== maxLength - 1) {
-      nextSpeeds[i+1] = speed;
+      let numberCounter = 0;
+      for (let i = 0; i < speeds.length; i++) {
+        if (isNaN(parseInt(children[i], 10))) continue;
+        numberCounter += 1;
+
+        setTimeout(() => {
+          const newSpeeds = this.state.speeds.slice(0);
+          newSpeeds[i] = speed;
+          this.setState({ speeds: newSpeeds });
+        }, numberCounter * delay);
+      }
+
+      this.setState({ animated: true });
     }
-    this.setState({
-      speeds: nextSpeeds,
-    });
   }
 
   render() {
-    const { children, visibilitySensorOn, speed, springConfig, style } = this.props;
+    const { children, visibilitySensorOn, springConfig, style } = this.props;
     const { speeds } = this.state;
 
     const numbers = [];
@@ -59,7 +58,6 @@ class TurnOverSequence extends Component {
           start={start}
           speed={speeds[i]}
           springConfig={springConfig}
-          onEnd={this.onEndOfNumberAt(i, speed, children.length)}
           style={style}
         >
           { end }
@@ -83,24 +81,26 @@ class TurnOverSequence extends Component {
   }
 }
 
+TurnOverSequence.defaultProps = {
+  visibilitySensorOn: true,
+  delay: 200,
+  speed: 50,
+  springConfig: {
+    stiffness: 100,
+    damping: 10,
+  },
+};
+
 TurnOverSequence.propTypes = {
   visibilitySensorOn: PropTypes.bool.isRequired,
   children: PropTypes.string.isRequired,
+  delay: PropTypes.number.isRequired,
   speed: PropTypes.number.isRequired,
   springConfig: PropTypes.shape({
     stiffness: PropTypes.number.isRequired,
     damping: PropTypes.number.isRequired
   }).isRequired,
   style: PropTypes.object,
-};
-
-TurnOverSequence.defaultProps = {
-  visibilitySensorOn: true,
-  speed: 50,
-  springConfig: {
-    stiffness: 100,
-    damping: 10,
-  },
 };
 
 export default TurnOverSequence;
